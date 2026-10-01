@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const blackListModel = require("../models/blacklist.model");
+const redis = require("../config/cache");
 
 const authMiddleware = async(req,res,next) => {
     const token = req.cookies.token;
@@ -8,7 +9,9 @@ const authMiddleware = async(req,res,next) => {
         return res.status(401).json({message : "Token not found."})
     }
 
-    const isBlackListedToken = await blackListModel.findOne({token});
+    // const isBlackListedToken = await blackListModel.findOne({token}); // for db token blacklisting
+
+    const isBlackListedToken = await redis.get(token);
 
     if(isBlackListedToken){
         return res.status(401).json({message : "Invalid Token"});
