@@ -39,18 +39,17 @@ const loginController = async (req, res) => {
 
     const user = await userModel.findOne({
         $or: [{ username }, { email }]
-    }
-    );
+    }).select("password");
 
     if (!user) {
-        return res.status(404).json({ meassage: "User dosn't exist." });
+        return res.status(401).json({ message: "Invalid Credentials." });
     }
 
     let decode ;
     try{
-        decode = await bcrypt.compare(password , user.password);
+        decode =  bcrypt.compare(password , user.password);
         if(!decode){
-            return res.status(401).json({message : "Unauthrized access."})
+            return res.status(401).json({message : "Invalid Credentials."})
         }
     }
     catch(err){
@@ -58,14 +57,27 @@ const loginController = async (req, res) => {
     }
 
     const token = jwt.sign({
+        userId : user._id,
         username: user.username
     }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
-    res.cookie(token);
+    
+    res.cookie("token", token);
 
     res.status(201).json({ message: "User Login Successfully." ,user})
 
 }
 
+const getMeController = async(req,res)=>{
+    const userId = req.userId;
 
-module.exports = { registerController, loginController }
+    const user = await userModel.findById(userId);
+
+    res.status(201).json({message : "User fetched successfully."});
+}
+
+
+
+
+
+module.exports = { registerController, loginController , getMeController}
