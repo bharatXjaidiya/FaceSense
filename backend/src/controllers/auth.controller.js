@@ -69,15 +69,25 @@ const loginController = async (req, res) => {
 }
 
 const getMeController = async(req,res)=>{
-    const userId = req.userId;
+    const userId = req.user.userId;
 
     const user = await userModel.findById(userId);
 
-    res.status(201).json({message : "User fetched successfully."});
+    res.status(201).json({message : "User fetched successfully.",user});
+}
+
+
+const logoutController = async(req,res)=>{
+
+    const user = await userModel.findById(req.userId);
+
+    res.clearCookie("token");
+
+    res.status(201).json({message : "Logout successfully."});
+
 }
 
 
 
 
-
-module.exports = { registerController, loginController , getMeController}
+module.exports = { registerController, loginController , getMeController , logoutController}
