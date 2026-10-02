@@ -10,7 +10,7 @@ redis.on("connect",()=>{
     console.log("Server is connected to redis")
 })
 
-redis.on("error",()=>{
+redis.on("error",(err)=>{
     console.log("radis error : " + err)
 })
 

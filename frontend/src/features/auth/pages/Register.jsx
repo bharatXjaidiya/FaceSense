@@ -34,7 +34,7 @@ const Register = () => {
   }
 
   if(loading){
-    return <h1>Registring you....</h1>
+    return <h1>Register....</h1>
   }
 
   return (
@@ -45,7 +45,7 @@ const Register = () => {
 
       <div className="register-right">
         <h1>Create an account</h1>
-        <form onSubmit={(e)=>{onSubmit(e)}} className="register-form">
+        <form onSubmit={(e)=>{onSubmit(e)}} className="form">
           <label htmlFor="username"> Username </label>
           <input onChange={(e) => { handleChange(e) }} type="text" id='username' name='username' value={username} required={true} />
           <label htmlFor="email">Email</label>
@@ -94,7 +94,7 @@ const Register = () => {
         </form>
         <div className="message">
           <p className='message'>Already Registered ?</p>
-          <Link to={"/login"} >login</Link>
+          <Link to={"/login"} >Login</Link>
         </div>
 
       </div>

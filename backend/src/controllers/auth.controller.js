@@ -35,13 +35,13 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
     const { username, email, password } = req.body;
 
-    if (!password || !(username && email)) {
+    if (!password || !(username || email)) {
         return res.status(400).json({ message: "All fields required." });
     }
 
     const user = await userModel.findOne({
         $or: [{ username }, { email }]
-    }).select("password");
+    }).select("-password");
 
     if (!user) {
         return res.status(401).json({ message: "Invalid Credentials." });
