@@ -7,11 +7,11 @@ import { ExpressionProvider } from "./features/expression/expression.context.jsx
 function App() {
 
   return (
-    <ExpressionProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </ExpressionProvider>
+    <AuthProvider>
+        <ExpressionProvider>
+          <RouterProvider router={router} />
+        </ExpressionProvider>
+    </AuthProvider>
   )
 }
 

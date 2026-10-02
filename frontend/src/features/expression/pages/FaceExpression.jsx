@@ -5,7 +5,7 @@ import useExpression from "../hook/useExpression";
 
 export default function FaceExpression({ onClick = () => { } }) {
 
-    const {user,loading,handleGetMe} = useExpression()
+    const {user,loading} = useExpression()
 
     const videoRef = useRef(null);
     const landmarkerRef = useRef(null);
@@ -15,7 +15,6 @@ export default function FaceExpression({ onClick = () => { } }) {
 
     useEffect(() => {
 
-        handleGetMe()
         
         init({ landmarkerRef, videoRef, streamRef });
 
