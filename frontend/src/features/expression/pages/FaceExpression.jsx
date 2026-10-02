@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { detect, init } from "../utils/utils";
+import useExpression from "../hook/useExpression";
 
 
 export default function FaceExpression({ onClick = () => { } }) {
+
+    const {user,loading,handleGetMe} = useExpression()
+
     const videoRef = useRef(null);
     const landmarkerRef = useRef(null);
     const streamRef = useRef(null);
@@ -10,6 +14,9 @@ export default function FaceExpression({ onClick = () => { } }) {
     const [expression, setExpression] = useState("Detecting...");
 
     useEffect(() => {
+
+        handleGetMe()
+        
         init({ landmarkerRef, videoRef, streamRef });
 
         return () => {
@@ -25,9 +32,15 @@ export default function FaceExpression({ onClick = () => { } }) {
         };
     }, []);
 
+    console.log(user)
+
     async function handleClick() {
         const expression = detect({ landmarkerRef, videoRef, setExpression })
     
+    }
+
+    if(loading){
+        return <h1>Loading...</h1>
     }
 
 

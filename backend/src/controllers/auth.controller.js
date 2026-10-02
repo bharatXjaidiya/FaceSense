@@ -41,7 +41,7 @@ const loginController = async (req, res) => {
 
     const user = await userModel.findOne({
         $or: [{ username }, { email }]
-    }).select("-password");
+    }).select("password");
 
     if (!user) {
         return res.status(401).json({ message: "Invalid Credentials." });
@@ -66,7 +66,12 @@ const loginController = async (req, res) => {
     
     res.cookie("token", token);
 
-    res.status(201).json({ message: "User Login Successfully." ,user})
+    res.status(201).json({ message: "User Login Successfully.",user :{
+        username : user.username,
+        id : user._id,
+        email : user.email,
+        gender : user.gender
+    }})
 
 }
 

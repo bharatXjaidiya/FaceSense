@@ -32,7 +32,7 @@ const Login = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         await handleLogin({ username, email, password })
-        navigate("/register")
+        navigate("/")
     }
 
 
@@ -67,7 +67,7 @@ const Login = () => {
                 </form>
                 <div className="message">
                     <p className='message'>Create a new Account ?</p>
-                    <Link to={"/"} >Sigup</Link>
+                    <Link to={"/register"} >Sigup</Link>
                 </div>
 
             </div>
