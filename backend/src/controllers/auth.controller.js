@@ -5,7 +5,7 @@ const blackListModel = require("../models/blacklist.model");
 const redis = require("../config/cache")
 
 const registerController = async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password , gender } = req.body;
 
     if (!username || !email || !password) {
         return res.status(400).json({ message: "all fields are required." })
@@ -26,7 +26,7 @@ const registerController = async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10)
 
-    const user = await userModel.create({ username, email, password: hash });
+    const user = await userModel.create({ username, email, password: hash , gender });
 
     res.status(201).json({ message: "user registered successfully.", user })
 
