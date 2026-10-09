@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+
+    .navbar-left {
+        img {
+            object-fit: cover;
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p{
+            font-weight: 800;
+            font-size: larger;
+        }
+        img {
+            width: 65px;
+            height: 65px;
+            object-fit: cover
+        }
+        a{
+            text-decoration: none;
+            &:hover{
+                color: red;
+                text-decoration: underline;
+            }
+        }
+    }
+}

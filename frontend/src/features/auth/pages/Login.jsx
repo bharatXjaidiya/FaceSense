@@ -5,7 +5,7 @@ import poster from "../../../assets/poster.jpg"
 import "../styles/form.scss";
 const Login = () => {
 
-    const { handleLogin, loading ,user } = useAuth()
+    const { handleLogin, loading  } = useAuth()
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("")

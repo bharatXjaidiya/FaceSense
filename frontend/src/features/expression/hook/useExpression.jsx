@@ -1,13 +1,12 @@
-import React , {useContext} from 'react'
+import React , {useContext, useEffect} from 'react'
 import { ExpressionContext } from '../expression.context'
+import useAuth from "../../auth/hooks/useAuth.jsx"
 
 const useExpression = () => {
-    const {user,loading,setUser,setLoading} = useContext(ExpressionContext)
+    const {loading,setLoading} = useContext(ExpressionContext)
 
-
-    
     return (
-        { user , loading }
+        {  loading  }
     )
 }
 

@@ -3,14 +3,18 @@ import { router } from './routes.jsx'
 import { AuthProvider } from "../src/features/auth/auth.context.jsx"
 import "./shared/styles/global.scss"
 import { ExpressionProvider } from "./features/expression/expression.context.jsx";
+import { SongProvider } from "./features/home/song.context.jsx";
+
 
 function App() {
 
   return (
     <AuthProvider>
-        <ExpressionProvider>
+      <ExpressionProvider>
+        <SongProvider>
           <RouterProvider router={router} />
-        </ExpressionProvider>
+        </SongProvider>
+      </ExpressionProvider>
     </AuthProvider>
   )
 }

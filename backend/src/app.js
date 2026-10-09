@@ -8,7 +8,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:5173", // your frontend URL, exactly
+        origin: ["http://localhost:5173"], // your frontend URL, exactly
         credentials: true,               // needed because you use cookies
     })
 );

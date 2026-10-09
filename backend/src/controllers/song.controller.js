@@ -78,7 +78,7 @@ const songDeleteController = async (req, res) => {
 }
 
 const getSongController = async (req, res) => {
-    const userId = req.userId;
+    const userId = req.user.userId;
 
     const songs = await songModel.find({
         $or: [
