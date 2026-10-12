@@ -6,7 +6,7 @@ const songSchema = new mongoose.Schema({
     posterUrl: { type: String },
     posterFileId: { type: String },
     title: { type: String, required: true },
-    mood: { enum: ["sad", "happy", "surprised"] },
+    mood: {type : String , enum: ["sad", "happy", "surprised"] },
     uploadedBy: {
         type: mongoose.Schema.Types.ObjectId, ref: "user"
     },

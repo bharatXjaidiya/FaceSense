@@ -36,6 +36,7 @@ async function seed() {
             const seedKey = `${mood}/${file}`;   // for example "happy/song1.mp3"
 
             const exists = await songModel.findOne({ seedKey });
+
             if (exists) {
                 console.log(`Skipped (already exists): ${seedKey}`);
                 continue;
@@ -58,16 +59,19 @@ async function seed() {
                         folder: "/face-sense/default-posters",
                     });
                 }
+                else {
+
+                }
 
                 await songModel.create({
                     title,
                     artist,
                     album: tags.album || "",
-                    mood,
+                    mood: mood,
                     songUrl: songFile.url,
                     songFileId: songFile.fileId,
-                    posterurl: posterFile?.url,
-                    posterFileId: posterFile?.fileId,
+                    posterUrl: posterFile?.url || process.env.DEFAULT_POSTER_URL,
+                    posterFileId: posterFile?.fileId,   // stays undefined when the default is used
                     isDefault: true,   // no uploadedBy
                     seedKey
                 });

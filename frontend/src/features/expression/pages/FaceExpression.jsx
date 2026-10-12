@@ -5,7 +5,7 @@ import useExpression from "../hook/useExpression";
 
 export default function FaceExpression({ onClick = () => { } }) {
 
-    const {user,loading} = useExpression()
+    const { user, loading } = useExpression()
 
     const videoRef = useRef(null);
     const landmarkerRef = useRef(null);
@@ -15,8 +15,10 @@ export default function FaceExpression({ onClick = () => { } }) {
 
     useEffect(() => {
 
-        
-        init({ landmarkerRef, videoRef, streamRef });
+
+        init({ landmarkerRef, videoRef, streamRef }).then(() => {
+            handleClick()
+        });
 
         return () => {
             if (landmarkerRef.current) {
@@ -31,14 +33,14 @@ export default function FaceExpression({ onClick = () => { } }) {
         };
     }, []);
 
-    console.log(user)
 
     async function handleClick() {
         const expression = detect({ landmarkerRef, videoRef, setExpression })
-    
+        console.log("expression is " + expression)
+        onClick(expression)
     }
 
-    if(loading){
+    if (loading) {
         return <h1>Loading...</h1>
     }
 

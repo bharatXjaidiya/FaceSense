@@ -20,6 +20,8 @@ const useSong = () => {
         
         const data = await deleteSong(songId)
 
+        setSongList((prev) => prev.filter((song) => song._id !== songId))
+
         setLoading(false)
 
         return data.message;
@@ -34,14 +36,10 @@ const useSong = () => {
 
         setLoading(false)
     }
-
-    useEffect(() => {
-        handleGetSongs()
-    }, [])
     
 
 
-    return { songList, loading };
+    return { songList, loading , handleGetSongs, handleDeleteSong };
 }
 
 export default useSong
