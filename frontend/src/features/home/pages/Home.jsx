@@ -16,7 +16,6 @@ const formatTime = (seconds) => {
   const s = Math.floor(seconds % 60).toString().padStart(2, "0");
   return `${m}:${s}`;
 };
-
 const Home = () => {
   const { songList, handleGetSongs, handleDeleteSong } = useSong();
 
