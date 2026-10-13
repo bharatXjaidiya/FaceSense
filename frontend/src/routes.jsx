@@ -3,6 +3,8 @@ import Register from "./features/auth/pages/Register";
 import Login from "./features/auth/pages/Login";
 import ProtectedComponent from "./features/auth/components/protectedComponent";
 import Home from "./features/home/pages/Home";
+import UploadSong from "./features/home/pages/UploadSong";
+
 
 export const router = createBrowserRouter([
   {
@@ -17,5 +19,9 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path : "/upload-song",
+    element : <UploadSong />
   }
 ]);

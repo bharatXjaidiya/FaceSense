@@ -27,10 +27,10 @@ const useSong = () => {
         return data.message;
     }
 
-    const handleUploadSong = async (song) => {
+    const handleUploadSong = async ({ mood, title, file }) => {
         setLoading(true)
 
-        const data = await uploadSongs(song);
+        const data = await uploadSong({mood,title,file});
 
         setSongList((prev)=> [...prev , data.song])
 
@@ -39,7 +39,7 @@ const useSong = () => {
     
 
 
-    return { songList, loading , handleGetSongs, handleDeleteSong };
+    return { songList, loading , handleGetSongs, handleDeleteSong , handleUploadSong ,setSongList };
 }
 
 export default useSong

@@ -11,8 +11,13 @@ export const getSongs = async () => {
     return response.data;
 }
 
-export const uploadSong = async (song) =>{
-    const response = await api.post("/api/song/upload" , song)
+export const uploadSong = async ({mood,title,file}) =>{
+    console.log(mood,title,file)
+    const formData = new FormData()
+    formData.append("title",title)
+    formData.append("song",file)
+    console.log(formData)
+    const response = await api.post("/api/song/upload?mood=" + mood , formData)
     return response.data;
 }
 

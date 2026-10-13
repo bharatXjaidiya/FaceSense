@@ -1,59 +1,70 @@
-import { useEffect, useRef, useState } from "react";
-import { detect, init } from "../utils/utils";
-import useExpression from "../hook/useExpression";
+import { memo, useEffect, useRef, useState } from "react";
+import { init, detectStable } from "../utils/utils";
 
+function FaceExpression({ onChange = () => {} }) {
+  const videoRef = useRef(null);
+  const landmarkerRef = useRef(null);
+  const streamRef = useRef(null);
 
-export default function FaceExpression({ onClick = () => { } }) {
+  const [ready, setReady] = useState(false);      // camera and model loaded
+  const [detecting, setDetecting] = useState(false);
+  const [expression, setExpression] = useState("Click the button to detect");
 
-    const { user, loading } = useExpression()
+  useEffect(() => {
+    let cancelled = false;
 
-    const videoRef = useRef(null);
-    const landmarkerRef = useRef(null);
-    const streamRef = useRef(null);
+    init({ landmarkerRef, videoRef, streamRef, isCancelled: () => cancelled })
+      .then((ok) => {
+        if (ok && !cancelled) setReady(true);
+      })
+      .catch((err) => {
+        console.error("Camera or model failed:", err);
+        if (!cancelled) setExpression("Could not start the camera");
+      });
 
-    const [expression, setExpression] = useState("Detecting...");
+    return () => {
+      cancelled = true;
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      landmarkerRef.current?.close();
+      landmarkerRef.current = null;
+    };
+  }, []);
 
-    useEffect(() => {
+  const handleDetect = async () => {
+    if (!ready || detecting) return;
 
+    setDetecting(true);
+    setExpression("Detecting...");
 
-        init({ landmarkerRef, videoRef, streamRef }).then(() => {
-            handleClick()
-        });
+    try {
+      const mood = await detectStable({ landmarkerRef, videoRef });
 
-        return () => {
-            if (landmarkerRef.current) {
-                landmarkerRef.current.close();
-            }
+      if (mood === "no-face") {
+        setExpression("No face found, try again");
+        return;                       // do not tell Home, so the song stays
+      }
 
-            if (videoRef.current?.srcObject) {
-                videoRef.current.srcObject
-                    .getTracks()
-                    .forEach((track) => track.stop());
-            }
-        };
-    }, []);
-
-
-    async function handleClick() {
-        const expression = detect({ landmarkerRef, videoRef, setExpression })
-        console.log("expression is " + expression)
-        onClick(expression)
+      setExpression(mood);
+      onChange(mood);                 // send the mood to Home
+    } finally {
+      setDetecting(false);
     }
+  };
 
-    if (loading) {
-        return <h1>Loading...</h1>
-    }
-
-
-    return (
-        <div style={{ textAlign: "center" }}>
-            <video
-                ref={videoRef}
-                style={{ width: "400px", borderRadius: "12px" }}
-                playsInline
-            />
-            <h2>{expression}</h2>
-            <button onClick={handleClick} >Detect expression</button>
-        </div>
-    );
+  return (
+    <div style={{ textAlign: "center" }}>
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        style={{ width: 400, borderRadius: 12, transform: "scaleX(-1)" }}
+      />
+      <h2 style={{ minHeight: "1.5em" }}>{expression}</h2>
+      <button type="button" onClick={handleDetect} disabled={!ready || detecting}>
+        {!ready ? "Starting camera..." : detecting ? "Detecting..." : "Detect expression"}
+      </button>
+    </div>
+  );
 }
+
+export default memo(FaceExpression);

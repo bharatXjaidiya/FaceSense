@@ -9,6 +9,7 @@ import {
 } from "react-icons/md";
 import defaultPoster from "../../../assets/poster.jpg";
 import "../styles/Home.scss";
+import { Link } from "react-router";
 
 const formatTime = (seconds) => {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
@@ -31,6 +32,8 @@ const Home = () => {
 
   const audio = useRef(null);
 
+  console.log(songList)
+  
   useEffect(() => {
     handleGetSongs();
   }, []);
@@ -140,7 +143,7 @@ const Home = () => {
 
       <div className="home-container">
         <div className="home-left">
-          <FaceExpression onClick={setExpression} />
+          <FaceExpression onChange={setExpression} />
         </div>
 
         <div className="home-right">
@@ -157,6 +160,9 @@ const Home = () => {
               />
             ))}
           </div>
+
+          <Link to={"/upload-song"} className="add-more-song-btn">Add More Songs</Link>
+          
         </div>
       </div>
 

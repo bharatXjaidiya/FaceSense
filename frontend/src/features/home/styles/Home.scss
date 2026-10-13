@@ -16,9 +16,21 @@
 
     .home-right{
         max-height: 80vh;
-        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
         .song-playlist{
-            overflow-y: hidden;
+            overflow-y: scroll;
+        }
+        .add-more-song-btn{
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: #1AA39A;
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
         }
     }
 }

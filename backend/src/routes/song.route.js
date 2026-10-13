@@ -6,8 +6,8 @@ const authMiddleware = require("../middlewares/auth.middleware");
 
 const songRouter = express.Router();
 
-songRouter.post("/upload", upload.single("song"), authMiddleware, songUploadController)
-songRouter.delete("/delete", authMiddleware, songDeleteController)
+songRouter.post("/upload", authMiddleware,upload.single("song"), songUploadController)
+songRouter.delete("/delete:songId", authMiddleware, songDeleteController)
 songRouter.get("/get", authMiddleware, getSongController)
 
 module.exports = songRouter;

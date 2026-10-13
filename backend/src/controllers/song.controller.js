@@ -21,7 +21,8 @@ const songUploadController = async (req, res) => {
         return res.status(400).json({ message: "Mood status is requred." })
     }
 
-    const { songFile, posterFile } = await Promise.all([
+
+    const [songFile,posterFile] = await Promise.all([
         imagekit.upload({
             file: req.file.buffer,                  // buffer from multer
             fileName: `${Date.now()}-${req.file.originalname}.mp3`,
@@ -34,6 +35,7 @@ const songUploadController = async (req, res) => {
         })
     ])
 
+
     const song = await songModel.create({
         songUrl: songFile.url,
         songFileId: songFile.fileId,
@@ -41,7 +43,7 @@ const songUploadController = async (req, res) => {
         posterFileId: posterFile?.fileId,
         title: req.body.title || tags.title || req.file.originalname,
         mood: mood,
-        uploadedBy: req.body.userId
+        uploadedBy: req.user.userId
     })
 
     return res.status(201).json({ message: "Song uploaded successfully.", song })
@@ -79,6 +81,7 @@ const songDeleteController = async (req, res) => {
 
 const getSongController = async (req, res) => {
     const userId = req.user.userId;
+    console.log(userId)
 
     const songs = await songModel.find({
         $or: [
