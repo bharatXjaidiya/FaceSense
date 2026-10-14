@@ -1,7 +1,8 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { init, detectStable } from "../utils/utils";
+import "../styles/FaceExpression.scss"
 
-function FaceExpression({ onChange = () => {} }) {
+function FaceExpression({ onChange = () => { } }) {
   const videoRef = useRef(null);
   const landmarkerRef = useRef(null);
   const streamRef = useRef(null);
@@ -52,17 +53,20 @@ function FaceExpression({ onChange = () => {} }) {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div className="face-expression" style={{ textAlign: "center" }}>
       <video
         ref={videoRef}
         muted
         playsInline
-        style={{ width: 400, borderRadius: 12, transform: "scaleX(-1)" }}
+        style={{ borderRadius: 12, transform: "scaleX(-1)" }}
       />
-      <h2 style={{ minHeight: "1.5em" }}>{expression}</h2>
-      <button type="button" onClick={handleDetect} disabled={!ready || detecting}>
-        {!ready ? "Starting camera..." : detecting ? "Detecting..." : "Detect expression"}
-      </button>
+      <div className="bottom">
+
+        <h2>{expression}</h2>
+        <button type="button" onClick={handleDetect} disabled={!ready || detecting}>
+          {!ready ? "Starting camera..." : detecting ? "Detecting..." : "Detect expression"}
+        </button>
+      </div>
     </div>
   );
 }

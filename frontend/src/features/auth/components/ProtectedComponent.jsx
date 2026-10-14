@@ -10,7 +10,10 @@ const ProtectedComponent = ({ children }) => {
   // show the loader only for the very first check
   if (loading && !user) return <h1>Loading...</h1>;
 
-  if (!user) return <Navigate to="/login" replace />;
+  onload((e)=>{
+    if (!user) return <Navigate to="/login" />;
+  })
+
 
   return children;
 };

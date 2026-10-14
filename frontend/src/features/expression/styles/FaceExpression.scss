@@ -1,0 +1,39 @@
+video{
+    width: 400px;
+}
+
+@media (max-width : 800px) {
+
+    video{
+        width: 400px;
+    }
+    .face-expression{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .bottom{
+        h2{
+            font-size: 20px;
+        }
+    }
+}
+
+@media (max-width : 600px) {
+
+    video{
+        width: 300px;
+    }
+    .face-expression{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 13px;
+    }
+    .bottom{
+        h2{
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+    }
+}
