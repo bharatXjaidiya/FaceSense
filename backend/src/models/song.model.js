@@ -12,7 +12,7 @@ const songSchema = new mongoose.Schema({
     },
     isDefault: { type: Boolean, default: false }, // never send by the user just true for the seed script othewise false
     seedKey: { type: String, unique: true, sparse: true }, // only default songs have it
-})
+},{timestamps : true})
 
 const songModel = mongoose.model("songs", songSchema)
 

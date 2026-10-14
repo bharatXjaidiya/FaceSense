@@ -40,8 +40,7 @@ const DEBUG = false; // true = print the average scores in the console after eac
 const THRESHOLDS = {
   happy: 0.3,
   surprised: 0.2,
-  angry: 0.4,
-  sad: 0.2,
+  sad: 0.03,
 };
 
 // read the blendshape scores of one frame, or null when there is no face

@@ -51,8 +51,7 @@ const songUploadController = async (req, res) => {
 }
 
 const songDeleteController = async (req, res) => {
-    const { songId } = req.params.songId;
-
+    const { songId } = req.params;
     const song = await songModel.findById(songId)
 
     if (!song) {
@@ -65,7 +64,7 @@ const songDeleteController = async (req, res) => {
     }
 
     // only the owner can delete
-    if (song.uploadedBy?.toString() !== req.userId) {
+    if (song.uploadedBy?.toString() !== req.user.userId) {
         return res.status(404).json({ message: "Song not found." });
     }
 
@@ -81,7 +80,6 @@ const songDeleteController = async (req, res) => {
 
 const getSongController = async (req, res) => {
     const userId = req.user.userId;
-    console.log(userId)
 
     const songs = await songModel.find({
         $or: [
