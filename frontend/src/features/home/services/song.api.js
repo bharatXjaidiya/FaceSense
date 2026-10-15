@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "/api",
     withCredentials: true
 })
 
 
 export const getSongs = async () => {
-    const response = await api.get("/api/song/get")
+    const response = await api.get("/song/get")
     return response.data;
 }
 
@@ -17,11 +17,11 @@ export const uploadSong = async ({mood,title,file}) =>{
     formData.append("title",title)
     formData.append("song",file)
     console.log(formData)
-    const response = await api.post("/api/song/upload?mood=" + mood , formData)
+    const response = await api.post("/song/upload?mood=" + mood , formData)
     return response.data;
 }
 
 export const deleteSong = async(songId) =>{
-    const response = await api.delete("/api/song/delete/" + songId);
+    const response = await api.delete("/song/delete/" + songId);
     return response.data;
 }

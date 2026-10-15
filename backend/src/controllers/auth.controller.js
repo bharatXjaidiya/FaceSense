@@ -5,7 +5,7 @@ const blackListModel = require("../models/blacklist.model");
 const redis = require("../config/cache")
 
 const registerController = async (req, res) => {
-    const { username, email, password , gender } = req.body;
+    const { username, email, password, gender } = req.body;
 
     if (!username || !email || !password) {
         return res.status(400).json({ message: "all fields are required." })
@@ -26,7 +26,7 @@ const registerController = async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10)
 
-    const user = await userModel.create({ username, email, password: hash , gender });
+    const user = await userModel.create({ username, email, password: hash, gender });
 
     res.status(201).json({ message: "user registered successfully.", user })
 
@@ -47,46 +47,55 @@ const loginController = async (req, res) => {
         return res.status(401).json({ message: "Invalid Credentials." });
     }
 
-    let decode ;
-    try{
+    let decode;
+    try {
 
-        decode =  await bcrypt.compare(password , user.password);
+        decode = await bcrypt.compare(password, user.password);
 
-        if(!decode){
-            return res.status(401).json({message : "Invalid Credentials."})
+        if (!decode) {
+            return res.status(401).json({ message: "Invalid Credentials." })
         }
     }
-    catch(err){
+    catch (err) {
         consle.log("error in decoding hash : " + err);
     }
 
     const token = jwt.sign({
-        userId : user._id,
+        userId: user._id,
         username: user.username
     }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
-    
-    res.cookie("token", token);
 
-    res.status(201).json({ message: "User Login Successfully.",user :{
-        username : user.username,
-        id : user._id,
-        email : user.email,
-        gender : user.gender
-    }})
+    const isProd = process.env.NODE_ENV === "production";
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: "lax",      // same origin now, so "lax" is enough
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({
+        message: "User Login Successfully.", user: {
+            username: user.username,
+            id: user._id,
+            email: user.email,
+            gender: user.gender
+        }
+    })
 
 }
 
-const getMeController = async(req,res)=>{
+const getMeController = async (req, res) => {
     const userId = req.user.userId;
 
     const user = await userModel.findById(userId);
 
-    res.status(201).json({message : "User fetched successfully.",user});
+    res.status(201).json({ message: "User fetched successfully.", user });
 }
 
 
-const logoutController = async(req,res)=>{
+const logoutController = async (req, res) => {
 
     const token = req.cookies.token;
 
@@ -96,13 +105,13 @@ const logoutController = async(req,res)=>{
     //     token
     // })
 
-    await redis.set(token,Date.now().toString(),"EX", 60 * 60 * 24);
+    await redis.set(token, Date.now().toString(), "EX", 60 * 60 * 24);
 
-    res.status(201).json({message : "Logout successfully."});
+    res.status(201).json({ message: "Logout successfully." });
 
 }
 
 
 
 
-module.exports = { registerController, loginController , getMeController , logoutController}
+module.exports = { registerController, loginController, getMeController, logoutController }
