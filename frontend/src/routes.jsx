@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Register from "./features/auth/pages/Register";
 import Login from "./features/auth/pages/Login";
-import ProtectedComponent from "./features/auth/components/protectedComponent";
+import ProtectedComponent from "./features/auth/components/ProtectedComponent";
 import Home from "./features/home/pages/Home";
 import UploadSong from "./features/home/pages/UploadSong";
 

@@ -49,7 +49,9 @@ const loginController = async (req, res) => {
 
     let decode ;
     try{
-        decode =  bcrypt.compare(password , user.password);
+
+        decode =  await bcrypt.compare(password , user.password);
+
         if(!decode){
             return res.status(401).json({message : "Invalid Credentials."})
         }
